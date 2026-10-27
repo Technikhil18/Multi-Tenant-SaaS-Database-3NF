@@ -1,0 +1,63 @@
+erDiagram
+    TENANTS ||--o{ TENANT_USERS : has
+    USERS ||--o{ TENANT_USERS : joins
+    USERS ||--o| USER_PROFILES : has
+    TENANTS ||--o{ PROJECTS : owns
+    PROJECTS ||--o{ PROJECT_MEMBERS : includes
+    USERS ||--o{ PROJECT_MEMBERS : joins
+    PROJECTS ||--o{ TASKS : contains
+    TASKS ||--o{ TASK_ASSIGNMENTS : has
+    USERS ||--o{ TASK_ASSIGNMENTS : assigned_to
+
+    TENANTS {
+        int tenant_id PK
+        varchar tenant_name
+        varchar tenant_code UK
+        timestamp created_at
+    }
+    USERS {
+        int user_id PK
+        varchar full_name
+        varchar email UK
+        timestamp created_at
+    }
+    TENANT_USERS {
+        int tenant_id PK, FK
+        int user_id PK, FK
+        varchar role
+        timestamp joined_at
+    }
+    USER_PROFILES {
+        int profile_id PK
+        int user_id FK, UK
+        varchar phone
+        varchar city
+        varchar bio
+    }
+    PROJECTS {
+        int project_id PK
+        int tenant_id FK
+        varchar project_name
+        varchar description
+        varchar status
+        timestamp created_at
+    }
+    PROJECT_MEMBERS {
+        int project_id PK, FK
+        int user_id PK, FK
+        varchar project_role
+    }
+    TASKS {
+        int task_id PK
+        int project_id FK
+        varchar task_title
+        varchar task_status
+        varchar priority
+        date due_date
+        timestamp created_at
+    }
+    TASK_ASSIGNMENTS {
+        int task_id PK, FK
+        int user_id PK, FK
+        timestamp assigned_at
+    }
